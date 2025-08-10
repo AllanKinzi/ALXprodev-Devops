@@ -1,0 +1,11 @@
+#!/bin/bash
+
+name=$(jq -r '.name' data.json | sed 's/.*/\u&/')    # Capitalize first letter
+height=$(jq '.height' data.json)                     # Height is in decimetres
+weight=$(jq '.weight' data.json)                     # Weight is in hectograms
+type=$(jq -r '.types[0].type.name' data.json | sed 's/.*/\u&/')  # First type, capitalized
+
+height_m=$(awk -v h="$height" 'BEGIN { printf "%.1f", h/10 }')
+weight_kg=$(awk -v w="$weight" 'BEGIN { printf "%.0f", w/10 }')
+
+echo "$name is of type $type, weighs ${weight_kg}kg, and is ${height_m}m tall."
